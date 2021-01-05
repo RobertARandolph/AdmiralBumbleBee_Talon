@@ -27,3 +27,11 @@ Most Vim things should work in Vim.
 * Various Vim commands - The things I use are there, but I'll add more over time. See vim.talon.
 * Very basic Emacs Commands
 * Some Clojure stuff that needs a lot of work.
+
+# Notes
+
+words.csv contains a list of words on [my website](https://www.admiralbumblebee.com). Just scan all files, remove anything that looks like html, code, etc... throw all the remaining words into a set. Sort that. Print that.
+
+I manually filtered through the words to remove nonsense, then vocabulary.py it into talon.
+
+So this will have a lot of words that probably mean nothing to you, but are meaningful to me.
