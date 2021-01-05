@@ -15,7 +15,7 @@ Most Vim things should work in Vim.
 * Vim Grammar support (main things are there, including counts, and growing)
   * "Visual Around Word" = "vaw"
     * Creates a selection around a word.
-  * "Change Find Letter Uppercase Sit" = "ctI"
+  * "Change To Uppercase Sit" = "ctI"
     * Delete text up to the letter "I" and enter insert mode.
   * "Wrap On Letter Back Crunch" = "ysFk"
     * Wrap from here to, and including, the letter k with...

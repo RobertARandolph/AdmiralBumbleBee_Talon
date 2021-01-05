@@ -28,7 +28,7 @@ av char:
 other buffer:
     key(ctrl-x b)
 
-kill|close buffer:
+(kill | close) buffer:
     key(ctrl-x k enter)
 
 # Windows

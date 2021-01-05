@@ -25,7 +25,7 @@ visual:
 put:
     key(p)
 
-insert put|paste:
+insert (put | paste):
     key(ctrl-r shift-')
 
 # Character changes
@@ -53,10 +53,10 @@ select column:
  
 # 2 character commands
 
-kill|delete line:
+(kill | delete) line:
     key(d d)
 
-start|beginning of buffer:
+(start | beginning) of buffer:
    key(g g)
 
 # Insert Mode entry
@@ -83,10 +83,10 @@ Surround:
 search:
     key(/)
 
-next search:
+next result:
     key(n)
 
-previous search:
+previous result:
     key(shift-n)
 
 # Formatting
@@ -140,7 +140,7 @@ last insert:
    key(`)
    key(shift-6)
 
-beginning|start of yank:
+(beginning | start) of yank:
    key(` [)
 
 end of yank:

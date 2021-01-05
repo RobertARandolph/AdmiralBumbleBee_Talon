@@ -30,9 +30,9 @@ ctx.lists['self.vim_position'] = {
 # Usable with an operator or alone
 mod.list('vim_active_ops', desc='Vim operators that do things on their own')
 ctx.lists['self.vim_active_ops'] = {
-    "find letter": "t",
+    "two": "t",
     "on letter": "f",
-    "find letter back": "T",
+    "two back": "T",
     "on letter back": "F"
 }
 
