@@ -7,10 +7,14 @@ ctx = Context()
 mod.list('vim_verbs', desc='Vim Grammar verbs')
 ctx.lists['self.vim_verbs'] = {
     "kill": "d",
+    "delete": "d",
     "change": "c",
     "yank": "y",
     "visual": "v",
-    "wrap": "ys"
+    "wrap": "ys",
+    "surround": "ys",
+    "uppercase": "gU",
+    "lowercase": "gu"
 }
 
 # Only composable with an operator
@@ -31,9 +35,9 @@ ctx.lists['self.vim_position'] = {
 mod.list('vim_active_ops', desc='Vim operators that do things on their own')
 ctx.lists['self.vim_active_ops'] = {
     "two": "t",
-    "on letter": "f",
+    "on": "f",
     "two back": "T",
-    "on letter back": "F"
+    "on back": "F"
 }
 
 # Usable with operator->action or alone

@@ -56,7 +56,10 @@ select column:
 (kill | delete) line:
     key(d d)
 
-(start | beginning) of buffer:
+yank line:
+    key(y y)
+
+start of buffer:
    key(g g)
 
 # Insert Mode entry
@@ -83,10 +86,10 @@ Surround:
 search:
     key(/)
 
-next result:
+next:
     key(n)
 
-previous result:
+previous:
     key(shift-n)
 
 # Formatting
@@ -130,6 +133,9 @@ next cursor:
 matching:
     key(%)
 
+other (end | side) [of visual]:
+   key(o)
+
 # Marks
 
 last change:
@@ -140,7 +146,7 @@ last insert:
    key(`)
    key(shift-6)
 
-(beginning | start) of yank:
+start of yank:
    key(` [)
 
 end of yank:
@@ -170,3 +176,6 @@ find next:
  
 find previous:
     key(,)
+
+toggle case:
+    key(shift-`)

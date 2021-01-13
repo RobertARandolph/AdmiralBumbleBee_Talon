@@ -10,6 +10,8 @@ I use [Emacs](https://www.gnu.org/software/emacs/) with the Vi/m emulation mode 
 
 Most Vim things should work in Vim.
 
+I use [Vimium in Chrome](https://github.com/philc/vimium/blob/master/README.md), so vimium.org has full support for vimium usage. It should mostly mirror vim usage, and I'll improve that over time.
+
 # What can you do?
 
 * Vim Grammar support (main things are there, including counts, and growing)
