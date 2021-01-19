@@ -30,6 +30,12 @@ I use [Vimium in Chrome](https://github.com/philc/vimium/blob/master/README.md),
 * Very basic Emacs Commands
 * Some Clojure stuff that needs a lot of work.
 
+## REAPER
+
+See (stuff here once published).
+
+REAPER setup requires [SWS Extensions](https://www.sws-extension.org).
+
 # Notes
 
 words.csv contains a list of words on [my website](https://www.admiralbumblebee.com). Just scan all files, remove anything that looks like html, code, etc... throw all the remaining words into a set. Sort that. Print that.
