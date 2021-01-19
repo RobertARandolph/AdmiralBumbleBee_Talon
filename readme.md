@@ -32,9 +32,9 @@ I use [Vimium in Chrome](https://github.com/philc/vimium/blob/master/README.md),
 
 ## REAPER
 
-See (stuff here once published).
+See [the first article about this](https://admiralbumblebee.com/music/2021/01/18/Reaper-Day-24.html) or [the first video](https://youtu.be/xAbigyf6OQ0)
 
-REAPER setup requires [SWS Extensions](https://www.sws-extension.org).
+REAPER setup requires [SWS Extensions](https://www.sws-extension.org), and my setup [as explored in this series](https://admiralbumblebee.com/music/2020/11/19/Starting-over-with-Reaper.html).
 
 # Notes
 

@@ -420,9 +420,3 @@ def master_send_pan(m) -> str:
     set_pan("master/send", m.number_list[1], m[4], m.number_list[0])
     return "" 
 
-@mod.capture(rule="find track <phrase>")
-def find_track(m) -> str:
-    actions.key("alt-f2")
-    actions.insert(f"{m.phrase}")
-    actions.key("enter")
-    return ""

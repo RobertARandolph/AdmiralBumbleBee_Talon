@@ -169,8 +169,10 @@ clear find:
     key("delete")
     key("enter")
 
-<user.find_track>:
-    insert(find_track)
+find track <phrase>$:
+     key("alt-f2")
+     insert(phrase)
+     key("enter")
 
 (go to|select) track <number>:
     user.send_osc_msg("/device/track/select", number)
