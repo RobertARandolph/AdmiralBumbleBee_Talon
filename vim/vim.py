@@ -21,7 +21,8 @@ ctx.lists['self.vim_verbs'] = {
 mod.list('vim_passive_ops', desc='Vim operaters that do nothing on their own')
 ctx.lists['self.vim_passive_ops'] = {
     "around": "a",
-    "in": "i"
+    "in": "i",
+    "surround": "s",
 }
 
 # List for position only

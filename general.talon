@@ -33,6 +33,12 @@ moon move right:
 moon move left:
     key(ctrl-cmd-9)
 
+Alfred <phrase>$:
+    key(cmd-space)
+    sleep(250ms)
+    insert(phrase)
+    key(enter)
+
 # Language Modes
 
 ^set closure: user.code_set_language_mode("clojure")
