@@ -54,7 +54,7 @@ class Actions:
             cleanup = vim_mode_key[emacs_mode()]
         actions.key("esc")
         for i in s.split(" "):
-            actions.key(s)
+            actions.key(i)
         if cleanup:
             actions.key(cleanup)
             
