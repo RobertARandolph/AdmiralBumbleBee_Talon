@@ -97,32 +97,48 @@ projectile project root:
 
 # Magit
 
-magit:
+maggot:
     key(ctrl-x g)
 
-magit file log:
-    key(ctrl-c alt-g l)
+maggot file log:
+    key(ctrl-c alt-g)
+    sleep(200ms)
+    key(l)
 
-magit stage file:
-    key(ctrl-c alt-g s)
+maggot stage file:
+    key(ctrl-c alt-g)
+    sleep(200ms)
+    key(s)
 
-magit unstage file:
-    key(ctrl-c alt-g u)
+maggot unstage file:
+    key(ctrl-c alt-g)
+    sleep(200ms)
+    key(u)
 
-magit diff (buffer | file):
-    key(ctrl-c alt-g d)
+maggot diff (buffer | file):
+    key(ctrl-c alt-g)
+    sleep(200ms)
+    key(d)
 
-magit buffer status:
-    key(ctrl-c alt-g g)
+maggot buffer status:
+    key(ctrl-c alt-g)
+    sleep(200ms)
+    key(g)
 
-magit blame:
-    key(ctrl-c alt-g shift-b)
+maggot blame:
+    key(ctrl-c alt-g)
+    sleep(200ms)
+    key(shift-b)
 
-magit diff:
-    key(ctrl-c alt-g shift-d)
+maggot diff:
+    key(ctrl-c alt-g)
+    sleep(200ms)
+    key(shift-d)
 
-magit commit:
-    key(ctrl-c alt-g c)
+maggot commit:
+    key(ctrl-c alt-g)
+    sleep(200ms)
+    key(c)
 
 # Org-mode
 
