@@ -14,8 +14,26 @@ append:
 visual:
     key(v)
 
-<user.vim_command>:
-    insert(vim_command)
+<user.vim_text_object_command>:
+    insert(user.vim_text_object_command)
+
+<user.vim_mark_unit>:
+    insert(user.vim_mark_unit)
+
+<user.vim_motion_command>:
+    insert(user.vim_motion_command)
+    
+<user.vim_operator_motion>:
+    insert(user.vim_operator_motion)
+
+<user.vim_operator_active>:
+    insert(user.vim_operator_active)
+
+<user.vim_active>:
+    insert(user.vim_active)
+
+<user.main_cap>:
+    insert(user.main_cap)
 
 <user.ex_mode>:
     insert(ex_mode)
@@ -23,58 +41,51 @@ visual:
 # Put
 
 put:
-    key(p)
-
-insert (put | paste):
-    key(ctrl-r shift-')
+    user.put_command()
 
 # Character changes
 
 replace:
-    key("r")
+    user.normal_command("r")
 
 kill:
-    key(x)
- 
-make lower:
-    key(g u)
+    user.normal_command("x")
 
-make upper:
-    key(g U)
-
+kill back:
+    user.normal_command("x")
 
 # Visual Mode
 
 select line:
-    key(V) 
+     user.normal_command("shift-v", 0)
  
 select column:
-    key(ctrl-v) 
+    user.normal_command("ctrl-v", 0)
  
 # 2 character commands
 
 (kill | delete) line:
-    key(d d)
+    user.normal_command("d d")
 
 yank line:
-    key(y y)
+    user.normal_command("y y", 1)
 
 start of buffer:
-   key(g g)
+   user.normal_command("g g")
 
 # Insert Mode entry
 
 [insert] line below:
-    key(o)
+    user.normal_command("o")
 
 [insert] line above:
-    key(O)
+    user.normal_command("O")
     
 (append line) | (insert at end of line):
     key(shift-a)
     
 prepend line:
-    key(shift-i)
+    user.normal_command("shift-i")
 
 # Surround
 
@@ -84,32 +95,32 @@ Surround:
 # Search
 
 search:
-    key(/)
+    user.normal_command("/")
 
 next:
-    key(n)
+    user.normal_command("n")
 
 previous:
-    key(shift-n)
+    user.normal_command("shift-n")
 
 # Formatting
 
 shift right:
-    key(">")
+    user.normal_command(">")
 
 shift left:
-    key("<")
+    user.normal_command("<")
 
 # Navigation
 
 page up:
-     key(ctrl-u)
+   user.normal_command("ctrl-u")
 
 page down:
-   key(ctrl-d)
+   user.normal_command("ctrl-d")
    
 end of buffer:
-   key(shift-g)
+   user.normal_command("shift-g")
 
 # Do things
 
@@ -117,21 +128,21 @@ filter:
     key(shift-1)
 
 undo:
-    key(esc u)
+    user.normal_command("u")
 
 redo:
-    key(ctrl-r)
+    user.normal_command("ctrl-r")
 
 # Cursor
 
 last cursor:
-    key(ctrl-o)
+    user.normal_command("ctrl-o")
 
 next cursor:
-    key(ctrl-i)
+    user.normal_command("ctrl-i")
 
 matching:
-    key(%)
+    user.normal_command("%")
 
 other (end | side) [of visual]:
    key(o)
@@ -139,43 +150,38 @@ other (end | side) [of visual]:
 # Marks
 
 last change:
-   key("`")
-   key(".")
+   user.normal_command("` .")
 
 last insert:
-   key(`)
-   key(shift-6)
+   user.normal_command("` ^")
 
 start of yank:
-   key(` [)
+   user.normal_command("` [")
 
 end of yank:
-   key(` ])
+   user.normal_command("` ]")
 
 mark position <user.letter>:
-   key(m)
-   key("{letter}")
+   user.normal_command("m {letter}")
 
 recall position <user.letter>:
-   key(`)
-   key("{letter}")
+   user.normal_command("` {letter}")
 
 recall line <user.letter>:
-   key(')
-   key("{letter}")
+   user.normal_command("' {letter}")
 
 # Package added
 snipe four:
-    key(s)
+    user.normal_command("s")
 
 snipe back:
-    key(shift-s)
+    user.normal_command("shift-s")
 
 find next:
-    key(;)
+    user.normal_command(";")
  
 find previous:
-    key(,)
+    user.normal_command(",")
 
 toggle case:
-    key(shift-`)
+    user.normal_command("shift-`")
