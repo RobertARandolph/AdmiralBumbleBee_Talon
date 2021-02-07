@@ -29,6 +29,10 @@ find file:
 meta command:
     key(alt-x)
 
+# commonly used to 'finish' an action
+emacs go:
+    key(ctrl-c ctrl-c)
+
 # This is my most common key sequence. Kill active commands, normal mode, save.
 reset:
     key(ctrl-g)
