@@ -43,8 +43,11 @@ reset:
 
 # Package added
         
-av char:
-    key(ctrl-;)
+jump <user.letter> <user.letter>:
+    key(cmd-f)
+    sleep(200ms)
+    key(letter)
+    key(letter_2)
 
 visual replace:
     key(ctrl-c r)
@@ -87,17 +90,17 @@ emacs save:
 grep:
     key(ctrl-c k)
 
-projectile (find | open) file:
-    key(ctrl-x p f)
+projectile file:
+    key(cmd-p f)
 
-projectile switch project:
-    key(ctrl-x p b)
+projectile project:
+    key(cmd-p p)
 
 projectile replace string:
-    key(ctrl-x p r)
+    key(cmd-cmd-p r)
 
 projectile project root:
-    key(ctrl-x p shift-d)
+    key(cmd-p shift-d)
 
 # Magit
 

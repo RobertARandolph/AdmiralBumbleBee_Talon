@@ -204,6 +204,8 @@ ctx.lists['self.vim_motion'] = {
     # No idea what ]] ][ [[ [] do. Doesn't appear to apply to what I work on.
 }
 
+## TODO - parse for modifier-key before returning strings
+
 #############
 ## Command ##
 #############
@@ -266,7 +268,6 @@ def vim_active(m) -> str:
     switch_normal()
     return to_str(m)
 
-# todo - motions that take counts? How to put in rules
 @mod.capture(rule="go to line <user.number_string>")
 def ex_mode(m) -> str:
     parsed = ""

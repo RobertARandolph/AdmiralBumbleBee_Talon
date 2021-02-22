@@ -39,6 +39,13 @@ Alfred <phrase>$:
     insert(phrase)
     key(enter)
 
+dot hypertext:
+    insert(".html")
+
+# Apparently "sege" is how I say "clj"?
+sege:
+    insert("clj")
+
 # Language Modes
 
 ^set closure: user.code_set_language_mode("clojure")

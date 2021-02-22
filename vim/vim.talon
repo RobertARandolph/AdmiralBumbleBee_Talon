@@ -67,6 +67,9 @@ select column:
 (kill | delete) line:
     user.normal_command("d d")
 
+<user.number_string> (kill | delete) line:
+    user.normal_command("{number_string} d d")
+
 yank line:
     user.normal_command("y y", 1)
 
