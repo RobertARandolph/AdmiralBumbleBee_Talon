@@ -119,7 +119,8 @@ ctx.lists['self.vim_text_objects'] = {
     "sentence": "s"
 }
 
-@mod.capture(rule='{self.vim_text_object_scope} {self.vim_text_objects}')
+# symbol key to support surround, such as ysi)"
+@mod.capture(rule='{self.vim_text_object_scope} {self.vim_text_objects} [<user.symbol_key>]')
 def vim_text_object(m) -> str:
     return to_str(m)
 
@@ -217,7 +218,7 @@ def vim_motion_command(m) -> str:
 #############
 ## Command ##
 #############
-@mod.capture(rule='^[<user.number_string>] {self.vim_operators} <user.vim_motion_command>$')
+@mod.capture(rule='^[<user.number_string>] {self.vim_operators} <user.vim_motion_command> $')
 def vim_operator_motion(m) -> str:
     switch_normal()
     return to_str(m)
@@ -246,7 +247,6 @@ def vim_active_letters(m) -> str:
 
 @mod.capture(rule='{self.vim_active_ops} <user.symbol_key>')
 def vim_active_other(m) -> str:
-    print(m)
     if m[1] == "space":
         return m[0] + " "
     else:
