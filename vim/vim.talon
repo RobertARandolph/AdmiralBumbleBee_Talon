@@ -1,6 +1,7 @@
 app.name: Emacs
 app.name: Vim
 -
+# TODO - detect visual mode for things like kill/surround/etc.. and use list for actions.
 
 [norm] abram:
     key(ctrl-[)
@@ -85,14 +86,14 @@ start of buffer:
     user.normal_command("O")
     
 (append line) | (insert at end of line):
-    key(shift-a)
-    
+    user.normal_command("shift-a")
+     
 prepend line:
     user.normal_command("shift-i")
 
 # Surround
 
-Surround:
+^surround$:
     key(shift-s)
 
 # Search
