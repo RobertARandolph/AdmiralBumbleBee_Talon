@@ -189,3 +189,8 @@ find previous:
 
 toggle case:
     user.normal_command("shift-`")
+
+# lispyville things
+
+slurp:
+    user.normal_command("shift-.")
