@@ -158,12 +158,13 @@ ctx.lists['self.vim_operators'] = {
     "visual": "v",
     "wrap": "ys",
     "surround": "ys",
+    "eval": "go"
 }
 
 #############
 ## Command ##
 #############
-@mod.capture(rule='{self.vim_operators} (<user.vim_text_object>|<user.vim_mark_unit>)')
+@mod.capture(rule='{self.vim_operators} [<user.number_string>] (<user.vim_text_object>|<user.vim_mark_unit>)')
 def vim_text_object_command(m) -> str:
     switch_normal()
     return to_str(m)
