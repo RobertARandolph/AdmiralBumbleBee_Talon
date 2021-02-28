@@ -15,6 +15,9 @@ append:
 visual:
     key(v)
 
+<user.vim_put>:
+    insert("")
+
 <user.vim_text_object_command>:
     insert(user.vim_text_object_command)
 
@@ -38,11 +41,6 @@ visual:
 
 <user.ex_mode>:
     insert(ex_mode)
-
-# Put
-
-put:
-    user.put_command()
 
 # Character changes
 
@@ -100,12 +98,6 @@ prepend line:
 
 search:
     user.normal_command("/")
-
-next:
-    user.normal_command("n")
-
-previous:
-    user.normal_command("shift-n")
 
 # Formatting
 
@@ -174,18 +166,25 @@ recall position <user.letter>:
 recall line <user.letter>:
    user.normal_command("' {letter}")
 
+# _g_lobal commands
+
+open under cursor:
+    user.normal("g x")
+
+insert at last:
+    user.normal("g i")
+
+last visual:
+    user.normal("g v")
+
+prepend line full(y):
+    user.normal("g I")
+
+#select last search|match:
+#    user.normal("g n")
+       
+
 # Package added
-snipe four:
-    user.normal_command("s")
-
-snipe back:
-    user.normal_command("shift-s")
-
-find next:
-    user.normal_command(";")
- 
-find previous:
-    user.normal_command(",")
 
 toggle case:
     user.normal_command("shift-`")

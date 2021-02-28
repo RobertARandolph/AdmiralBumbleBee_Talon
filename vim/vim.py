@@ -1,5 +1,6 @@
 from talon import Module, Context, actions, app, imgui, grammar
 from pathlib import Path
+from typing import Any, Union
 import re
 mod = Module()
 ctx = Context()
@@ -58,14 +59,6 @@ class Actions:
         if cleanup:
             actions.key(cleanup)
             
-    def put_command():
-        """Keys to send in normal mode"""
-        if emacs_mode() == "insert":
-            actions.key("ctrl-r")
-            actions.key("shift-'")
-        else:
-            actions.key("p")
-
 # Things I'm ignoring because I don't use them:
 # Automatic marks ('<, '', etc..) except a few.
 # [[ ]] [] etc... 
@@ -158,7 +151,9 @@ ctx.lists['self.vim_operators'] = {
     "visual": "v",
     "wrap": "ys",
     "surround": "ys",
-    "eval": "go"
+    "format": "=",
+    "indent": "=",
+    "eval": "go",
 }
 
 #############
@@ -183,7 +178,7 @@ ctx.lists['self.vim_motion'] = {
     "down": "j",
     "left": "h",
     "right": "l",
-    "down non blank": "shift-=",
+    "down non blank": "+",
     "up non blank": "-",
     "word": "w",
     "big word": "W",
@@ -200,9 +195,14 @@ ctx.lists['self.vim_motion'] = {
     "end of line": "g_",
     "newline": "$",
     "start of line": "0",
+    "first non blank": "^",
     "first word": "^",
     "beginning of file": "gg",
     "end of file": "G",
+    "next": "n",
+    "previous": "N",
+    "find next": ";",
+    "find previous": ","
     # No idea what ]] ][ [[ [] do. Doesn't appear to apply to what I work on.
 }
 
@@ -234,17 +234,20 @@ ctx.lists['self.vim_active_ops'] = {
     "on back": "F"
 }
 
-@mod.capture(rule='{self.vim_active_ops} [ship|uppercase] <user.letter>')
-def vim_active_letters(m) -> str:
+@mod.capture(rule='[ship|uppercase] <user.letter>')
+def vim_letter(m) -> str:
     parsed = ""
-    itr = iter(m)
 
-    if m[1] == "ship" or m[1] == "uppercase":
+    if m[0] == "ship" or m[0] == "uppercase":
         l = m.letter.capitalize()
     else:
         l = m.letter
 
-    return str(m[0] + l)
+    return str(l)
+
+@mod.capture(rule='{self.vim_active_ops} <self.vim_letter>')
+def vim_active_letters(m) -> str:
+    return to_str(m)
 
 @mod.capture(rule='{self.vim_active_ops} <user.symbol_key>')
 def vim_active_other(m) -> str:
@@ -269,9 +272,60 @@ def vim_active(m) -> str:
     switch_normal()
     return to_str(m)
 
+# I don't discern between readable/writeable registers in captures
+# because this is not linked to a specific command
+# but they are separated here in case I wish to change that
+mod.list('vim_write_register', desc='Registers')
+ctx.lists['self.vim_write_register'] = {
+    "black hole": "_",
+}
+
+mod.list('vim_read_register', desc='Registers')
+ctx.lists['self.vim_read_register'] = {
+    "unnamed": "\"",
+    "small delete": "-",
+    "small kill": "-",
+    "last search": "/",
+    "last inserted": ".",
+    "file name": "%",
+    "other file name": "#",
+    "last command": ":"
+}
+
+# I don't combine this with other commands because I frequently pause after using the register
+@mod.capture(rule='register {user.vim_read_register}|{user.vim_write_register}|<user.number_string>|<self.vim_letter>') 
+def vim_register(m) -> str:
+    return str("\"" + m[0])
+
+def put_command(r: [str, None]):
+    """Keys to send in normal mode"""    
+    register = ""
+    if r is not None:
+        register = r
+
+    if emacs_mode() == "insert":
+        actions.key("ctrl-r")
+        actions.key("shift-'")
+        actions.insert(register)
+    else:
+        actions.insert(register)
+        actions.key("p")
+
+#############
+## Command ##
+#############
+@mod.capture(rule='put [<self.vim_register>]') 
+def vim_put(m) -> str:
+    if hasattr(m, 'vim_register'):
+        put_command(m.vim_register)
+    else:
+        put_command(None)
+    return ""
+
 @mod.capture(rule="go to line <user.number_string>")
 def ex_mode(m) -> str:
     parsed = ""
     actions.insert(f":{m.number_string}")
     actions.key("enter")
     return ""
+
