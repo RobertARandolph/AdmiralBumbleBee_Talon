@@ -14,6 +14,8 @@ I use [Vimium in Chrome](https://github.com/philc/vimium/blob/master/README.md),
 
 # What can you do?
 
+Most of these commands know if emacs is in insert or normal mode, and acts accordingly. You can say "delete up to fine" while in insert mode and it will jump to normal mode, delete up to "f" and go back into insert.
+
 * Vim Grammar support (main things are there, including counts, and growing)
   * "Visual Around Word" = "vaw"
     * Creates a selection around a word.
@@ -28,7 +30,7 @@ I use [Vimium in Chrome](https://github.com/philc/vimium/blob/master/README.md),
   * "Change surround angle left paren" - cs>(
     * Change the nearest surrounding <> to () without affecting other text.
   * etc...
-  * Registers - most evil registers supported
+  * Registers - most evil registers supported, uses correct command automatically for insert/normal
     * "register black hole change up to ship fine" - "_ctF
       * Change from here to the next capital F, do not clobber the kill ring with the killed text.
     * "register cap yank around sentence" - "cyas
@@ -49,8 +51,10 @@ I use [Vimium in Chrome](https://github.com/philc/vimium/blob/master/README.md),
     * Marks work with text objects
       * "yank to position red" - y`r
         * yank all text to position r
+* Moderate [Vimium](https://vimium.github.io) support
 * Very basic Emacs Commands
 * Some Clojure stuff that needs a lot of work.
+* lispyville stuff in progress
 
 ## REAPER
 
@@ -65,3 +69,4 @@ words.csv contains a list of words on [my website](https://www.admiralbumblebee.
 I manually filtered through the words to remove nonsense, then vocabulary.py it into talon.
 
 So this will have a lot of words that probably mean nothing to you, but are meaningful to me.
+
