@@ -1,37 +1,83 @@
-#from talon import Context, Module, actions, grammar
-#from ...knausj_talon.code.user_settings import bind_list_to_csv, bind_word_map_to_csv
-#import csv
-#import os
+from talon import Context, Module, actions, grammar, fs
+from ...knausj_talon.code.user_settings import bind_list_to_csv, bind_word_map_to_csv
+import csv
+import os
+
+mod = Module()
+ctx = Context()
+
+#ctx.lists['user.vocabulary'] = { "datum": "poop" }
+
+#mod.list('beecabulary', desc="additional beecabulary words")
 #
-## Default words that need to be remapped.
-#_word_map_defaults = {
-    ## E.g:
-    ## "cash": "cache",
-    #"datum": "datom",
-    #"datums": "datoms"
-#}
+
+dirname = os.path.dirname(__file__)
+filename = os.path.join(dirname, 'word_map.csv')
+
+robert_vocab = {}
+
+def _update_vocab(*_):
+    global robert_vocab
+
+    with open(filename) as csvfile:
+        reader = csv.reader(csvfile)
+        for row in reader:
+            if row[1] != '':
+                robert_vocab.update({row[0]: row[1]})
+            else:
+                robert_vocab.update({row[0]: row[0]})
+    ctx.lists['user.vocabulary'] = robert_vocab
+    print(robert_vocab)            
+
+_update_vocab()
+fs.watch(str(dirname), _update_vocab)
+
 #
-#_capitalize_defaults = []
+##print(f"{_default_vocabulary}")
 #
-## Default words that should be added to Talon's vocabulary.
-#_simple_vocab_default = []
+##ctx.settings["dictate.word_map"] = _default_vocabulary
 #
-#dirname = os.path.dirname(__file__)
-#filename = os.path.join(dirname, 'words.csv')
-#with open(filename) as csvfile:
-    #reader = csv.reader(csvfile)
-    #for row in reader:
-        #_simple_vocab_default.append(row[0])
+#no_space_before = set("\n .,!?;:-/%)]}")
+#no_space_after = set("\n -/#([{$£€¥₩₽₹")
+#def format_phrase(m):
+#    words = capture_to_word_list(m)
+#    result = ""
+#    for i, word in enumerate(words):
+#        if i > 0 and word not in no_space_before and words[i - 1][-1] not in no_space_after:
+#            result += " "
+#        result += word
+#    return result
 #
+#def capture_to_word_list(m):
+#    words = []
+#    for item in m:
+#        words.extend(
+#            actions.dictate.replace_words(actions.dictate.parse_words(item))
+#            if isinstance(item, grammar.vm.Phrase) else
+#            item.split(" "))
+#    return words
+#
+#@mod.capture(rule="({self.beecabulary} | <word>)")
+#def word(m) -> str:
+#    print("beecab")
+#    try:
+#        return m.beecabulary
+#    except AttributeError:
+#        return " ".join(actions.dictate.replace_words(actions.dictate.parse_words(m.word)))
+#
+#@mod.capture(rule="({self.beecabulary} | <phrase>)+")
+#def text(m) -> str: return format_phrase(m)
+#
+#@mod.capture(rule="({self.beecabulary} | {user.punctuation} | <phrase>)+")
+#def prose(m) -> str: return format_phrase(m)
+
 ## Defaults for different pronounciations of words that need to be added to
 ## Talon's vocabulary.
 #_mapping_vocab_default = {}
 #
-#mod = Module()
 #
 #mod.list("vocabulary", desc="user vocabulary")
 #
-#ctx = Context()
 #
 #_default_word_map = {}
 #_default_word_map.update(_word_map_defaults)
