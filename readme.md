@@ -25,8 +25,30 @@ I use [Vimium in Chrome](https://github.com/philc/vimium/blob/master/README.md),
     * Delete all text in an xml/html tag.
   * "Yank 2 Big Word" = "y2W"
     * Copy from here to 2 whitespace delimited words forward.
+  * "Change surround angle left paren" - cs>(
+    * Change the nearest surrounding <> to () without affecting other text.
   * etc...
+  * Registers - most evil registers supported
+    * "register black hole change up to ship fine" - "_ctF
+      * Change from here to the next capital F, do not clobber the kill ring with the killed text.
+    * "register cap yank around sentence" - "cyas
+      * Put the "sentence" (could language/mode dependent) into the register c.
+    * "put register drum" - "dp
+      * Put the contents of register d.
+    * "put register file name" - "%p
+      * Put the current file name.
+
 * Various Vim commands - The things I use are there, but I'll add more over time. See vim.talon.
+  * "Search selected" - yq/p
+    * Search for the current visually selected text (using q/ command mode)
+  * Full Mark support
+    * "Last change" - `.
+      * Jump to last change
+    * "Mark position Drum" - md
+      * Mark current position in position d
+    * Marks work with text objects
+      * "yank to position red" - y`r
+        * yank all text to position r
 * Very basic Emacs Commands
 * Some Clojure stuff that needs a lot of work.
 
