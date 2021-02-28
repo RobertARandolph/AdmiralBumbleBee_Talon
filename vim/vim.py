@@ -142,10 +142,6 @@ def vim_mark_unit(m) -> str:
 # Operators
 mod.list('vim_operators', desc='Vim Grammar verbs')
 ctx.lists['self.vim_operators'] = {
-    "change": "c",
-    "kill": "d",
-    "delete": "d",
-    "yank": "y",
     "uppercase": "gU",
     "lowercase": "gu",
     "visual": "v",
@@ -156,10 +152,27 @@ ctx.lists['self.vim_operators'] = {
     "eval": "go",
 }
 
+# Operators
+mod.list('vim_registerable_operators', desc='Vim Grammar verbs that can enter data into a register')
+ctx.lists['self.vim_registerable_operators'] = {
+    "change": "c",
+    "kill": "d",
+    "delete": "d",
+    "yank": "y",
+}
+
+@mod.capture(rule='[<self.vim_write_register>] {self.vim_registerable_operators}')
+def vim_registerable_operators(m) -> str:
+    return to_str(m)
+
+@mod.capture(rule='<self.vim_registerable_operators> | {self.vim_operators}')
+def vim_operators(m) -> str:
+    return to_str(m)
+
 #############
 ## Command ##
 #############
-@mod.capture(rule='{self.vim_operators} [<user.number_string>] (<user.vim_text_object>|<user.vim_mark_unit>)')
+@mod.capture(rule='<self.vim_operators> [<user.number_string>] (<user.vim_text_object>|<user.vim_mark_unit>)')
 def vim_text_object_command(m) -> str:
     switch_normal()
     return to_str(m)
@@ -219,7 +232,7 @@ def vim_motion_command(m) -> str:
 #############
 ## Command ##
 #############
-@mod.capture(rule='^[<user.number_string>] {self.vim_operators} <user.vim_motion_command> $')
+@mod.capture(rule='^[<user.number_string>] <self.vim_operators> <user.vim_motion_command> $')
 def vim_operator_motion(m) -> str:
     switch_normal()
     return to_str(m)
@@ -259,7 +272,7 @@ def vim_active_other(m) -> str:
 #############
 ## Command ##
 #############
-@mod.capture(rule='{self.vim_operators} (<user.vim_active_letters>|<user.vim_active_other>)')
+@mod.capture(rule='<self.vim_operators> (<user.vim_active_letters>|<user.vim_active_other>)')
 def vim_operator_active(m) -> str:
     switch_normal()
     return to_str(m)
@@ -275,13 +288,13 @@ def vim_active(m) -> str:
 # I don't discern between readable/writeable registers in captures
 # because this is not linked to a specific command
 # but they are separated here in case I wish to change that
-mod.list('vim_write_register', desc='Registers')
-ctx.lists['self.vim_write_register'] = {
+mod.list('vim_write_registers', desc='Registers')
+ctx.lists['self.vim_write_registers'] = {
     "black hole": "_",
 }
 
-mod.list('vim_read_register', desc='Registers')
-ctx.lists['self.vim_read_register'] = {
+mod.list('vim_read_registers', desc='Registers')
+ctx.lists['self.vim_read_registers'] = {
     "unnamed": "\"",
     "small delete": "-",
     "small kill": "-",
@@ -293,9 +306,14 @@ ctx.lists['self.vim_read_register'] = {
 }
 
 # I don't combine this with other commands because I frequently pause after using the register
-@mod.capture(rule='register {user.vim_read_register}|{user.vim_write_register}|<user.number_string>|<self.vim_letter>') 
-def vim_register(m) -> str:
-    return str("\"" + m[0])
+@mod.capture(rule='register ({user.vim_read_registers}|{user.vim_write_register}|<user.number_string>|<self.vim_letter>)') 
+def vim_read_register(m) -> str:
+    return str("\"" + m[1])
+
+# I don't combine this with other commands because I frequently pause after using the register
+@mod.capture(rule='register ({user.vim_write_registers}|<self.vim_letter>)') 
+def vim_write_register(m) -> str:
+    return str("\"" + m[1])
 
 def put_command(r: [str, None]):
     """Keys to send in normal mode"""    
@@ -314,10 +332,10 @@ def put_command(r: [str, None]):
 #############
 ## Command ##
 #############
-@mod.capture(rule='put [<self.vim_register>]') 
+@mod.capture(rule='put [<self.vim_read_register>]') 
 def vim_put(m) -> str:
-    if hasattr(m, 'vim_register'):
-        put_command(m.vim_register)
+    if hasattr(m, 'vim_read_register'):
+        put_command(m.vim_read_register)
     else:
         put_command(None)
     return ""
