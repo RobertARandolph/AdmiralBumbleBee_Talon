@@ -24,8 +24,8 @@ visual:
 <user.vim_text_object_command>:
     insert(user.vim_text_object_command)
 
-<user.vim_mark_unit>:
-    insert(user.vim_mark_unit)
+<user.vim_mark_command>:
+    insert(user.vim_mark_command)
 
 <user.vim_motion_command>:
     insert(user.vim_motion_command)

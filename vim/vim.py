@@ -46,19 +46,25 @@ def switch_normal(reset: int=0):
     if emacs_mode() == "insert":
         actions.key("esc")
 
+
+def normal_mode_command(s: str, reset: int=0):
+    """Keys to send in normal mode"""
+    cleanup = ""
+    print("ESCAPING")
+    if reset == 1:
+        cleanup = vim_mode_key[emacs_mode()]
+    actions.key("esc")
+    for i in s.split(" "):
+        actions.key(i)
+    if cleanup:
+        actions.key(cleanup)
+
 @mod.action_class
 class Actions:
     def normal_command(s: str, reset: int=0):
         """Keys to send in normal mode"""
-        cleanup = ""
-        if reset:
-            cleanup = vim_mode_key[emacs_mode()]
-        actions.key("esc")
-        for i in s.split(" "):
-            actions.key(i)
-        if cleanup:
-            actions.key(cleanup)
-            
+        normal_mode_command(s, reset)
+
 # Things I'm ignoring because I don't use them:
 # Automatic marks ('<, '', etc..) except a few.
 # [[ ]] [] etc... 
@@ -69,6 +75,8 @@ class Actions:
 def to_str(m: grammar.vm.Capture) -> str:
     return ''.join(str(x) for x in m)
 
+def to_spaced_str(m: grammar.vm.Capture) -> str:
+    return ' '.join(str(x) for x in m)
 
 mod.list('vim_text_object_scope', desc='Vim text object scope')
 ctx.lists['self.vim_text_object_scope'] = {
@@ -115,7 +123,7 @@ ctx.lists['self.vim_text_objects'] = {
 # symbol key to support surround, such as ysi)"
 @mod.capture(rule='{self.vim_text_object_scope} {self.vim_text_objects} [<user.symbol_key>]')
 def vim_text_object(m) -> str:
-    return to_str(m)
+    return to_spaced_str(m)
 
 mod.list('vim_mark_indicator', desc='Vim mark use command')
 ctx.lists['self.vim_mark_indicator'] = {
@@ -137,16 +145,16 @@ ctx.lists['self.vim_mark_target'] = {
 
 @mod.capture(rule='{self.vim_mark_indicator} ({self.vim_mark_target}|<user.letter>)')
 def vim_mark_unit(m) -> str:
-    return to_str(m)
-
+    return to_spaced_str(m)
+    
 #############
 ## Command ##
 #############
 @mod.capture(rule='<self.vim_mark_unit>')
-def vim_mark(m) -> str:
-    switch_normal()
-    return to_str(m)
-    
+def vim_mark_command(m) -> str:
+    normal_mode_command(to_spaced_str(m), 1)
+    return ""
+
 # Operators
 mod.list('vim_operators', desc='Vim Grammar verbs')
 ctx.lists['self.vim_operators'] = {
@@ -171,27 +179,19 @@ ctx.lists['self.vim_registerable_operators'] = {
 
 @mod.capture(rule='[<self.vim_write_register>] {self.vim_registerable_operators}')
 def vim_registerable_operators(m) -> str:
-    return to_str(m)
+    return to_spaced_str(m)
 
 @mod.capture(rule='<self.vim_registerable_operators> | {self.vim_operators}')
 def vim_operators(m) -> str:
-    return to_str(m)
+    return to_spaced_str(m)
 
 #############
 ## Command ##
 #############
 @mod.capture(rule='<self.vim_operators> [<user.number_string>] (<user.vim_text_object>|<user.vim_mark_unit>)')
 def vim_text_object_command(m) -> str:
-    switch_normal()
-    return to_str(m)
-
-#############
-## Command ##
-#############
-@mod.capture(rule='^<user.vim_mark_unit>$')
-def vim_mark_command(m) -> str:
-    switch_normal()
-    return to_str(m)
+    normal_mode_command(to_spaced_str(m), 1)
+    return ""
 
 mod.list('vim_motion', desc='Vim motions')
 ctx.lists['self.vim_motion'] = {
@@ -234,16 +234,16 @@ ctx.lists['self.vim_motion'] = {
 #############
 @mod.capture(rule='^[<user.number_string>] {self.vim_motion}$')
 def vim_motion_command(m) -> str:
-    switch_normal()
-    return to_str(m)
+    normal_mode_command(to_spaced_str(m), 1)
+    return "" 
 
 #############
 ## Command ##
 #############
 @mod.capture(rule='^[<user.number_string>] <self.vim_operators> <user.vim_motion_command> $')
 def vim_operator_motion(m) -> str:
-    switch_normal()
-    return to_str(m)
+    normal_mode_command(to_spaced_str(m), 1)
+    return "" 
 
 # Countable
 # Usable with an operator or alone, followed by any character!
@@ -268,30 +268,30 @@ def vim_letter(m) -> str:
 
 @mod.capture(rule='{self.vim_active_ops} <self.vim_letter>')
 def vim_active_letters(m) -> str:
-    return to_str(m)
+    return to_spaced_str(m)
 
 @mod.capture(rule='{self.vim_active_ops} <user.symbol_key>')
 def vim_active_other(m) -> str:
     if m[1] == "space":
         return m[0] + " "
     else:
-        return to_str(m)
+        return to_spaced_str(m)
 
 #############
 ## Command ##
 #############
 @mod.capture(rule='<self.vim_operators> (<user.vim_active_letters>|<user.vim_active_other>)')
 def vim_operator_active(m) -> str:
-    switch_normal()
-    return to_str(m)
+    normal_mode_command(to_spaced_str(m), 1)
+    return ""
 
 #############
 ## Command ##
 #############
 @mod.capture(rule='<user.vim_active_letters>|<user.vim_active_other>')
 def vim_active(m) -> str:
-    switch_normal()
-    return to_str(m)
+    normal_mode_command(to_spaced_str(m), 1)
+    return ""
 
 # I don't discern between readable/writeable registers in captures
 # because this is not linked to a specific command
@@ -318,12 +318,12 @@ ctx.lists['self.vim_read_registers'] = {
 # I don't combine this with other commands because I frequently pause after using the register
 @mod.capture(rule='register ({user.vim_read_registers}|{user.vim_write_register}|<user.number_string>|<self.vim_letter>)') 
 def vim_read_register(m) -> str:
-    return str("\"" + m[1])
+    return str("\" " + m[1])
 
 # I don't combine this with other commands because I frequently pause after using the register
 @mod.capture(rule='register ({user.vim_write_registers}|<self.vim_letter>)') 
 def vim_write_register(m) -> str:
-    return str("\"" + m[1])
+    return str("\" " + m[1])
 
 def put_command(r: [str, None]):
     """Keys to send in normal mode"""    
@@ -333,10 +333,9 @@ def put_command(r: [str, None]):
 
     if emacs_mode() == "insert":
         actions.key("ctrl-r")
-        actions.key("shift-'")
-        actions.insert(register)
+        actions.insert(register[1:].replace(" ", ""))
     else:
-        actions.insert(register)
+        actions.insert(register.replace(" ", ""))
         actions.key("p")
 
 #############
