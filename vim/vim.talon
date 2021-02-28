@@ -18,6 +18,9 @@ visual:
 <user.vim_put>:
     insert("")
 
+<user.vim_mark>:
+    insert(user.vim_mark)
+
 <user.vim_text_object_command>:
     insert(user.vim_text_object_command)
 
@@ -60,6 +63,9 @@ select line:
  
 select column:
     user.normal_command("ctrl-v", 0)
+
+colum nselect:
+    user.normal_command("ctrl-v", 0)
  
 # 2 character commands
 
@@ -98,6 +104,23 @@ prepend line:
 
 search:
     user.normal_command("/")
+
+search under cursor:
+    user.normal_command("*")
+
+search back under cursor:
+    user.normal_command("#")
+
+search selected:
+    key(y)
+    key(q)
+    key(/)
+    key(p)
+    key(enter)
+
+edit search:
+    key(q)
+    key(/)
 
 # Formatting
 
@@ -145,28 +168,10 @@ other (end | side) [of visual]:
 
 # Marks
 
-last change:
-   user.normal_command("` .")
-
-last insert:
-   user.normal_command("` ^")
-
-start of yank:
-   user.normal_command("` [")
-
-end of yank:
-   user.normal_command("` ]")
-
 mark position <user.letter>:
    user.normal_command("m {letter}")
 
-recall position <user.letter>:
-   user.normal_command("` {letter}")
-
-recall line <user.letter>:
-   user.normal_command("' {letter}")
-
-# _g_lobal commands
+# global commands
 
 open under cursor:
     user.normal("g x")

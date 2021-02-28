@@ -85,16 +85,16 @@ ctx.lists['self.vim_text_objects'] = {
     "square": "[",
     "R square": "]",
     "right square": "]",
-    "paren": "(",
+    "paren": ")",
     "L paren": "(",
     "left paren": "(",
     "R paren": ")",
     "right paren": ")",
-    "brace": "{",
+    "brace": "}",
     "left brace": "{",
     "R brace": "}",
     "right brace": "}",
-    "angle": "<",
+    "angle": ">",
     "left angle": "<",
     "less than": "<",
     "rangle": ">",
@@ -119,24 +119,32 @@ def vim_text_object(m) -> str:
 
 mod.list('vim_mark_indicator', desc='Vim mark use command')
 ctx.lists['self.vim_mark_indicator'] = {
-    "to position": "\'",
-    "position": "\'",
-}
+    "to position": "`",
+    "to line": "\'",}
 
 # List for position only
 mod.list('vim_mark_target', desc='Vim mark targets')
 ctx.lists['self.vim_mark_target'] = {
     "last change": ".",
+    "last insert": "^",
     "last exit": "\"",
     "last position": "\'",
-    "next yank": "[",
-    "previous yank": "]",
+    "start of yank": "[",
+    "end of yank": "]",
     "next visual": "<",
     "previous visual": ">",
 }
 
-@mod.capture(rule='{self.vim_mark_indicator} {self.vim_mark_target}')
+@mod.capture(rule='{self.vim_mark_indicator} ({self.vim_mark_target}|<user.letter>)')
 def vim_mark_unit(m) -> str:
+    return to_str(m)
+
+#############
+## Command ##
+#############
+@mod.capture(rule='<self.vim_mark_unit>')
+def vim_mark(m) -> str:
+    switch_normal()
     return to_str(m)
     
 # Operators
@@ -291,6 +299,7 @@ def vim_active(m) -> str:
 mod.list('vim_write_registers', desc='Registers')
 ctx.lists['self.vim_write_registers'] = {
     "black hole": "_",
+    "clipboard": "+",
 }
 
 mod.list('vim_read_registers', desc='Registers')
@@ -302,7 +311,8 @@ ctx.lists['self.vim_read_registers'] = {
     "last inserted": ".",
     "file name": "%",
     "other file name": "#",
-    "last command": ":"
+    "last command": ":",
+    "clipboard": "+",
 }
 
 # I don't combine this with other commands because I frequently pause after using the register
