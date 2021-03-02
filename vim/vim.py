@@ -1,7 +1,8 @@
-from talon import Module, Context, actions, app, imgui, grammar
+from talon import Module, Context, actions, app, imgui, grammar, fs
 from pathlib import Path
 from typing import Any, Union
 import re
+import os
 mod = Module()
 ctx = Context()
 
@@ -31,9 +32,25 @@ ctx = Context()
 # (add-hook 'evil-normal-state-entry-hook
 #           (lambda ()
 #             (write-mode "normal")))
-def emacs_mode():
+
+## Event-ish vim/emacs updating.
+## Mode changes more often than talon reads it, so this is superfluous
+#emacs_mode = get_emacs_mode()
+#
+#def mode_check(s: str, e):
+#    global emacs_mode
+#    if Path(s).name == "mode":
+#        emacs_mode = get_emacs_mode()
+#
+#filename = str(Path.home()) + '/.emacs.d'
+#fs.watch(filename, mode_check)
+
+def get_emacs_mode():
     with open(str(Path.home()) + '/.emacs.d/mode', 'r') as reader:
         return reader.readline().strip()
+
+def emacs_mode():
+    return get_emacs_mode()
 
 
 # Entering a mode after an Escape->command-> cycle
@@ -46,24 +63,63 @@ def switch_normal(reset: int=0):
     if emacs_mode() == "insert":
         actions.key("esc")
 
-
-def normal_mode_command(s: str, reset: int=0):
-    """Keys to send in normal mode"""
-    cleanup = ""
-    print("ESCAPING")
-    if reset == 1:
-        cleanup = vim_mode_key[emacs_mode()]
-    actions.key("esc")
+def execute_space_separated_string(s: str):
     for i in s.split(" "):
         actions.key(i)
+
+def normal_mode_command(s: str, reset: int=0, visual: int=0):
+    """Keys to send in normal mode"""
+    cleanup = ""
+    if reset == 1:
+        cleanup = vim_mode_key[emacs_mode()]
+
+    if emacs_mode() != "normal":
+        actions.key("esc")
+
+    execute_space_separated_string(s)
+
     if cleanup:
         actions.key(cleanup)
 
+def insert_mode_command(s: str, reset: int=0):
+    """Keys to send in insert mode"""
+    cleanup = ""
+    if reset == 1:
+        cleanup = vim_mode_key[emacs_mode()]
+    if emacs_mode() != "insert":
+        # Should probably ctrl-g here to ensure a reset
+        actions.key("esc")
+        actions.key("i") # or a?
+
+    execute_space_separated_string(s)
+    if cleanup:
+        actions.key(cleanup)
+
+def multi_command(s: str, reset: int=0, mode: int=0):
+    # 0 - Normal
+    # 1 - Visual
+    # 2 - Normal/Visual
+    # 3 - Insert
+    # 4 - Plain Command
+    
+    if mode == 0:
+        normal_mode_command(s, reset)
+    elif mode == 1:
+        # Visual mode range is probably nonsense after an action
+        # So I don't care about resetting to it. Should probably error if we try...
+        execute_space_separated_string(s)
+    elif mode == 2:
+        normal_mode_command(s, reset, 1)
+    elif mode == 3:
+        insert_mode_command(s, reset)
+    elif mode == 4:
+         execute_space_separated_string(s)
+
 @mod.action_class
 class Actions:
-    def normal_command(s: str, reset: int=0):
+    def normal_command(s: str, reset: int=0, mode: int=0):
         """Keys to send in normal mode"""
-        normal_mode_command(s, reset)
+        normal_mode_command(s, reset, mode)
 
 # Things I'm ignoring because I don't use them:
 # Automatic marks ('<, '', etc..) except a few.
