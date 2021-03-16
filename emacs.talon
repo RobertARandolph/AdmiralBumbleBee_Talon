@@ -66,10 +66,10 @@ list buffers:
 # Windows
 
 other window:
-    key(ctrl-x o)
+    key(cmd-m)
 
 move window:
-    key(ctrl-x o m)
+    key(cmd-m m)
 
 close window:
     key(ctrl-x 0)
