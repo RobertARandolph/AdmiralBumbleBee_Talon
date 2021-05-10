@@ -105,6 +105,7 @@ prepend line:
 search:
     user.normal_command("/")
 
+<<<<<<< HEAD
 search under cursor:
     user.normal_command("*")
 
@@ -121,6 +122,10 @@ search selected:
 edit search:
     key(q)
     key(/)
+=======
+search back:
+    user.normal_command("?")
+>>>>>>> 7d28693 (add search back)
 
 # Formatting
 
