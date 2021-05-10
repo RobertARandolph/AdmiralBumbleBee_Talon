@@ -105,7 +105,7 @@ projectile project root:
 # Magit
 
 maggot:
-    key(ctrl-x g)
+    key(cmd-g)
 
 maggot file log:
     key(ctrl-c alt-g)
