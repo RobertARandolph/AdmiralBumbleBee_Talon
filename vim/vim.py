@@ -75,10 +75,6 @@ def normal_mode_command(s: str, reset: int=0, visual: int=0):
     if reset == 1:
         cleanup = vim_mode_key[emacs_mode()]
 
-        # This shouldn't happen always. CIW should drop into insert
-    if emacs_mode() != "normal":
-        actions.key("esc")
-
     execute_space_separated_string(s)
 
     if cleanup:
@@ -137,7 +133,6 @@ def to_str(m: grammar.vm.Capture) -> str:
 def to_spaced_str(m: grammar.vm.Capture) -> str:
     x = ' '.join(str(x) for x in m)
     print (f"to_spaced: '{x}'")
-    print (f"to_spaced m: '{m}'")
     return x
 
 mod.list('vim_text_object_scope', desc='Vim text object scope')
@@ -214,6 +209,7 @@ def vim_mark_unit(m) -> str:
 #############
 @mod.capture(rule='<self.vim_mark_unit>')
 def vim_mark_command(m) -> str:
+    print("mark_command")
     normal_mode_command(to_spaced_str(m), 1)
     return ""
 
@@ -241,12 +237,12 @@ ctx.lists['self.vim_registerable_operators'] = {
 
 @mod.capture(rule='[<self.vim_write_register>] {self.vim_registerable_operators}')
 def vim_registerable_operators(m) -> str:
-    print("Registerable_ops")
+    print(f"Registerable_ops: {m}")
     return to_spaced_str(m)
 
 @mod.capture(rule='<self.vim_registerable_operators> | {self.vim_operators}')
 def vim_operators(m) -> str:
-    print("vim_ops")
+    print(f"vim_operators: {m}")
     return to_spaced_str(m)
 
 #############
@@ -254,6 +250,7 @@ def vim_operators(m) -> str:
 #############
 @mod.capture(rule='<self.vim_operators> [<user.number_string>] (<user.vim_text_object>|<user.vim_mark_unit>)')
 def vim_text_object_command(m) -> str:
+    print("vim_text_object_command")
     normal_mode_command(to_spaced_str(m), 1)
     return ""
 
@@ -269,8 +266,8 @@ ctx.lists['self.vim_motion'] = {
     "big word": "W",
     "back": "b",
     "big back": "B",
-    "end": "e",
-    "big end": "E",
+    "end word": "e",
+    "big end word": "E",
     "end back": "ge",
     "end back big": "gE",
     "sentence": "(",
@@ -298,14 +295,16 @@ ctx.lists['self.vim_motion'] = {
 #############
 @mod.capture(rule='^[<user.number_string>] {self.vim_motion}$')
 def vim_motion_command(m) -> str:
+    print(f"vim_motion_command: {m}")
     normal_mode_command(to_spaced_str(m), 1)
     return "" 
 
 #############
 ## Command ##
 #############
-@mod.capture(rule='^[<user.number_string>] <self.vim_operators> <user.vim_motion_command>$')
+@mod.capture(rule='^[<user.number_string>] <self.vim_operators> [<user.number_string>] {self.vim_motion}$')
 def vim_operator_motion(m) -> str:
+    print("vim_operator_motion")
     normal_mode_command(to_spaced_str(m), 1)
     return "" 
 
@@ -346,6 +345,7 @@ def vim_active_other(m) -> str:
 #############
 @mod.capture(rule='<self.vim_operators> (<user.vim_active_letters>|<user.vim_active_other>)')
 def vim_operator_active(m) -> str:
+    print("vim_operator_active")
     normal_mode_command(to_spaced_str(m), 1)
     return ""
 
