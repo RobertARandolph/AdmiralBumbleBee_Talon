@@ -64,15 +64,18 @@ def switch_normal(reset: int=0):
         actions.key("esc")
 
 def execute_space_separated_string(s: str):
+    print(f"ESSS: '{s}'")
     for i in s.split(" "):
         actions.key(i)
 
 def normal_mode_command(s: str, reset: int=0, visual: int=0):
     """Keys to send in normal mode"""
+    print(f"Command: '{s}'")
     cleanup = ""
     if reset == 1:
         cleanup = vim_mode_key[emacs_mode()]
 
+        # This shouldn't happen always. CIW should drop into insert
     if emacs_mode() != "normal":
         actions.key("esc")
 
@@ -132,7 +135,10 @@ def to_str(m: grammar.vm.Capture) -> str:
     return ''.join(str(x) for x in m)
 
 def to_spaced_str(m: grammar.vm.Capture) -> str:
-    return ' '.join(str(x) for x in m)
+    x = ' '.join(str(x) for x in m)
+    print (f"to_spaced: '{x}'")
+    print (f"to_spaced m: '{m}'")
+    return x
 
 mod.list('vim_text_object_scope', desc='Vim text object scope')
 ctx.lists['self.vim_text_object_scope'] = {
@@ -235,10 +241,12 @@ ctx.lists['self.vim_registerable_operators'] = {
 
 @mod.capture(rule='[<self.vim_write_register>] {self.vim_registerable_operators}')
 def vim_registerable_operators(m) -> str:
+    print("Registerable_ops")
     return to_spaced_str(m)
 
 @mod.capture(rule='<self.vim_registerable_operators> | {self.vim_operators}')
 def vim_operators(m) -> str:
+    print("vim_ops")
     return to_spaced_str(m)
 
 #############
@@ -296,7 +304,7 @@ def vim_motion_command(m) -> str:
 #############
 ## Command ##
 #############
-@mod.capture(rule='^[<user.number_string>] <self.vim_operators> <user.vim_motion_command> $')
+@mod.capture(rule='^[<user.number_string>] <self.vim_operators> <user.vim_motion_command>$')
 def vim_operator_motion(m) -> str:
     normal_mode_command(to_spaced_str(m), 1)
     return "" 
