@@ -63,6 +63,12 @@ def switch_normal(reset: int=0):
     if emacs_mode() == "insert":
         actions.key("esc")
 
+# Talon doesn't like key("\d\d"). Separate numbers by spaces
+def separate_numbers(s: str):
+    sep = re.sub(r"(\d(?!\s))", r"\1 ", s)
+    print(f"Sep: {sep}")
+    return sep
+
 def execute_space_separated_string(s: str):
     print(f"ESSS: '{s}'")
     for i in s.split(" "):
@@ -75,10 +81,11 @@ def normal_mode_command(s: str, reset: int=0, visual: int=0):
     if reset == 1:
         cleanup = vim_mode_key[emacs_mode()]
 
-    execute_space_separated_string(s)
+    execute_space_separated_string(separate_numbers(s))
 
-    if cleanup:
-        actions.key(cleanup)
+    # don't back out for now. Causes issues with visual mode
+    #if cleanup:
+    #    actions.key(cleanup)
 
 def insert_mode_command(s: str, reset: int=0):
     """Keys to send in insert mode"""
