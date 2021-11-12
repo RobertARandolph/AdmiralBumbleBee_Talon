@@ -18,8 +18,11 @@ visual:
 <user.vim_put>:
     insert("")
 
-<user.vim_mark>:
-    insert(user.vim_mark)
+## <user.vim_mark>:
+##     insert(user.vim_mark)
+## 
+## <user.main_cap>:
+##     insert(user.main_cap)
 
 <user.vim_text_object_command>:
     insert(user.vim_text_object_command)
@@ -39,8 +42,6 @@ visual:
 <user.vim_active>:
     insert(user.vim_active)
 
-<user.main_cap>:
-    insert(user.main_cap)
 
 <user.ex_mode>:
     insert(ex_mode)
@@ -59,7 +60,7 @@ kill back:
 # Visual Mode
 
 select line:
-     user.normal_command("shift-v", 0)
+    user.normal_command("shift-v", 0)
  
 select column:
     user.normal_command("ctrl-v", 0)
