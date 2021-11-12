@@ -69,7 +69,7 @@ def separate_numbers(s: str):
     print(f"Sep: {sep}")
     return sep
 
-def execute_space_separated_string(s: str):
+def execute_space_separated_string(s: str, insert: int=1):
     print(f"ESSS: '{s}'")
     for i in s.split(" "):
         actions.key(i)
@@ -140,7 +140,7 @@ def to_str(m: grammar.vm.Capture) -> str:
 def to_spaced_str(m: grammar.vm.Capture) -> str:
     x = ' '.join(str(x) for x in m)
     print (f"to_spaced: '{x}'")
-    return x
+    return x.strip()
 
 mod.list('vim_text_object_scope', desc='Vim text object scope')
 ctx.lists['self.vim_text_object_scope'] = {
@@ -192,7 +192,8 @@ def vim_text_object(m) -> str:
 mod.list('vim_mark_indicator', desc='Vim mark use command')
 ctx.lists['self.vim_mark_indicator'] = {
     "to position": "`",
-    "to line": "\'",}
+    "to line": "\'"
+}
 
 # List for position only
 mod.list('vim_mark_target', desc='Vim mark targets')
@@ -223,14 +224,14 @@ def vim_mark_command(m) -> str:
 # Operators
 mod.list('vim_operators', desc='Vim Grammar verbs')
 ctx.lists['self.vim_operators'] = {
-    "uppercase": "gU",
-    "lowercase": "gu",
+    "uppercase": "g U",
+    "lowercase": "g u",
     "visual": "v",
-    "wrap": "ys",
-    "surround": "ys",
+    "wrap": "y s",
+    "surround": "y s",
     "format": "=",
     "indent": "=",
-    "eval": "go",
+    "eval": "g o",
 }
 
 # Operators
@@ -275,18 +276,18 @@ ctx.lists['self.vim_motion'] = {
     "big back": "B",
     "end word": "e",
     "big end word": "E",
-    "end back": "ge",
-    "end back big": "gE",
+    "end back": "g e",
+    "end back big": "g E",
     "sentence": "(",
     "sentence back": ")",
     "paragraph": "{",
     "paragraph back": "}",
-    "end of line": "g_",
+    "end of line": "g _",
     "newline": "$",
     "start of line": "0",
     "first non blank": "^",
     "first word": "^",
-    "beginning of file": "gg",
+    "beginning of file": "g g",
     "end of file": "G",
     "next": "n",
     "previous": "N",
@@ -317,7 +318,7 @@ def vim_operator_motion(m) -> str:
 
 # Countable
 # Usable with an operator or alone, followed by any character!
-mod.list('vim_active_ops', desc='Vim operators that do things on their own')
+mod.list('vim_active_ops', desc='Vim operators that do not do things on their own')
 ctx.lists['self.vim_active_ops'] = {
     "up to": "t",
     "on": "f",
@@ -387,7 +388,7 @@ ctx.lists['self.vim_read_registers'] = {
 }
 
 # I don't combine this with other commands because I frequently pause after using the register
-@mod.capture(rule='register ({user.vim_read_registers}|{user.vim_write_register}|<user.number_string>|<self.vim_letter>)') 
+@mod.capture(rule='register ({user.vim_read_registers}|{user.vim_write_registers}|<user.number_string>|<self.vim_letter>)') 
 def vim_read_register(m) -> str:
     return str("\" " + m[1])
 
