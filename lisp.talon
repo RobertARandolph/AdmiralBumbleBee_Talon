@@ -29,7 +29,6 @@ branch condp: user.code_branch_condp()
 
 # thread
 arrow first: user.code_arrow_first()
-arrow first: user.code_arrow_first()
 arrow some: user.code_arrow_some()
 arrow some_last: user.code_arrow_some_last()
 arrow as: user.code_arrow_as()
