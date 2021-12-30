@@ -1,0 +1,1 @@
+<user.number_string>: insert(user.number_string)
