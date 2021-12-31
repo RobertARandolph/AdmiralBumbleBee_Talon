@@ -3,11 +3,10 @@ from talon.grammar import Phrase
 from talon.grammar.vm import Capture
 from inspect import getmembers, isfunction
 from user.robert_talon.language import formatter_fns
+from user.robert_talon.language import substitutions
     
 # Acquire a list of formatter functions. The fn names are the trigger words
 formatters_list = dict(getmembers(formatter_fns, isfunction))
-
-print(f"{formatters_list}")
 
 ctx = Context()
 mod = Module()
@@ -19,4 +18,4 @@ ctx.lists["self.formatter_dict"] = {k: k for (k , v) in formatters_list.items()}
 @mod.capture(rule="^({self.formatter_dict}) (<phrase>)+")
 def formatters(m: Capture) -> str:
     "call formatter with m"
-    return formatters_list[m.formatter_dict](m)
+    return substitutions.substitute(formatters_list[m.formatter_dict](m))

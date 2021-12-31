@@ -1,36 +1,36 @@
-from talon import Context, Module, actions, grammar, fs
-from ...knausj_talon.code.user_settings import bind_list_to_csv, bind_word_map_to_csv
-import csv
-import os
-
-mod = Module()
-ctx = Context()
+# from talon import Context, Module, actions, grammar, fs
+# from ...knausj_talon.code.user_settings import bind_list_to_csv, bind_word_map_to_csv
+# import csv
+# import os
+# 
+# mod = Module()
+# ctx = Context()
 
 #ctx.lists['user.vocabulary'] = { "datum": "poop" }
 
 #mod.list('beecabulary', desc="additional beecabulary words")
 #
 
-dirname = os.path.dirname(__file__)
-filename = os.path.join(dirname, 'word_map.csv')
-
-robert_vocab = {}
-
-def _update_vocab(*_):
-    global robert_vocab
-
-    with open(filename) as csvfile:
-        reader = csv.reader(csvfile)
-        for row in reader:
-            if row[1] != '':
-                robert_vocab.update({row[0]: row[1]})
-            else:
-                robert_vocab.update({row[0]: row[0]})
-    ctx.lists['user.vocabulary'] = robert_vocab
-    print(robert_vocab)            
-
-_update_vocab()
-fs.watch(str(dirname), _update_vocab)
+# dirname = os.path.dirname(__file__)
+# filename = os.path.join(dirname, 'word_map.csv')
+# 
+# robert_vocab = {}
+# 
+# def _update_vocab(*_):
+#     global robert_vocab
+# 
+#     with open(filename) as csvfile:
+#         reader = csv.reader(csvfile)
+#         for row in reader:
+#             if row[1] != '':
+#                 robert_vocab.update({row[0]: row[1]})
+#             else:
+#                 robert_vocab.update({row[0]: row[0]})
+#     ctx.lists['user.vocabulary'] = robert_vocab
+#     print(robert_vocab)            
+# 
+# _update_vocab()
+# fs.watch(str(dirname), _update_vocab)
 
 #
 ##print(f"{_default_vocabulary}")
