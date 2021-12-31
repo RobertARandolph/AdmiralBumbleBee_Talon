@@ -1,0 +1,5 @@
+<user.arrow_key>: key(arrow_key)
+<user.function_key>: key(function_key)
+<user.non_alphanum_key>: key(non_alphanum_key)
+<user.modified_key>: key(user.modified_key)
+<user.repeater>: insert(user.repeater)
