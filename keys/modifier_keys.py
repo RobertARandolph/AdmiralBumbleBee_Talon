@@ -24,7 +24,14 @@ def modifiers(m) -> str:
     "One or more modifier keys"
     return "-".join(m.modifier_key_list)
 
-@mod.capture(rule="<self.modifiers> <self.unmodified_key>")
+@mod.capture(rule="<self.modifiers> <self.unmodified_key>$")
 def modified_key(m) -> str:
     print(f"{m.modifiers}-{m.unmodified_key}")
     return f"{m.modifiers}-{m.unmodified_key}"
+
+@mod.capture(rule="<self.modifiers> <self.unmodified_key>+")
+def modified_key_sequence(m) -> str:
+    for k in m.unmodified_key_list:
+        print(f"{m.modifiers}-{m.unmodified_key}")
+        actions.key(f"{m.modifiers}-{k}")
+    return ""

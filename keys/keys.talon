@@ -2,4 +2,5 @@
 <user.function_key>: key(function_key)
 <user.non_alphanum_key>: key(non_alphanum_key)
 <user.modified_key>: key(user.modified_key)
+<user.modified_key_sequence>: insert(user.modified_key_sequence)
 <user.repeater>: insert(user.repeater)
