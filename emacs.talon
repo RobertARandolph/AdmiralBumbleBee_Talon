@@ -57,6 +57,10 @@ visual replace:
 other buffer:
     key(ctrl-x b)
 
+last buffer:
+    key(ctrl-x b)
+    key(enter)
+
 list buffers:
     key(ctrl-x ctrl-b)
 
